@@ -98,6 +98,7 @@ You can check out the GitHub Explore website [at github.com/explore](https://git
 * Go to your user dashboard and create a new repository. Experiment with the features within that repository to familiarize yourself with them. 
 
 
+
 ## 📚  Resources 
 * [A short video explaining what GitHub is](https://www.youtube.com/watch?v=w3jLJU7DT5E&feature=youtu.be) 
 * [Git and GitHub learning resources](https://docs.github.com/en/github/getting-started-with-github/git-and-github-learning-resources) 
