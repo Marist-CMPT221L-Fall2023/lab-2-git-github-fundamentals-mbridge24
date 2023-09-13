@@ -1,0 +1,1 @@
+I learned how to fork a repository, create and edit files, and commit changes. I'm still confused about the order of things in the lab and styling. I will be finding some other tutorials and trying things out on my own.
