@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Stefano Farro - JS Calculator</title>
+    <style>
+        #calc {
+            width: 500;
+            margin: 5px auto;
+            padding: 10px;
+            border: 1px solid;
+            border-radius: 5px;
+        }
+        input[type = "text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #a39584;
+        }
+        input[type = "button"] {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            margin: 5px; 
+        }
+        #line {
+            width: 15%; 
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #a39584;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+    <div id = "calculator">
+        <input  type = "text" style = background-color:#574c41 id = "line" disabled>
+        <br>
+        <input type = "button" style = background-color:#6b6259 value = "1" onclick = "addChar('1')">
+        <input type = "button" style = background-color:#6b6259 value = "2" onclick = "addChar('2')">
+        <input type = "button" style = background-color:#6b6259 value = "3" onclick = "addChar('3')">
+        <input type = "button" style = background-color:#cc7829 value = "+/-" onclick = "toggleSign()">
+        <br>
+        <input type = "button" style = background-color:#6b6259 value = "4" onclick = "addChar('4')">
+        <input type = "button" style = background-color:#6b6259 value = "5" onclick = "addChar('5')">
+        <input type = "button" style = background-color:#6b6259 value = "6" onclick = "addChar('6')">
+        <input type = "button" style = background-color:#cc7829 value = "/" onclick = "addChar('/')">
+        <br>
+        <input type = "button" style = background-color:#6b6259 value = "7" onclick = "addChar('7')">
+        <input type = "button" style = background-color:#6b6259 value = "8" onclick = "addChar('8')">
+        <input type = "button" style = background-color:#6b6259 value = "9" onclick = "addChar('9')">
+        <input type = "button" style = background-color:#cc7829 value = "*" onclick = "addChar('*')">
+        <br>
+        <input type = "button" style = background-color:#6b6259 value = "0" onclick = "addChar('0')">
+        <input type = "button" style = background-color:#45403b value = "." onclick = "addChar('.')">
+        <input type = "button" style = background-color:#45403b value = "del" onclick = "del()">
+        <input type = "button" style = background-color:#45403b value = "=" onclick = "calc()">
+        
+        
+    </div>
+    <script>
+        var plusMinus = '+';
+        function addChar(value) {
+            document.getElementById('line').value += value;
+        }
+        function del() {
+            document.getElementById('line').value = "";
+        }
+        function toggleSign() {
+            if (line.value === "" || (line.value.slice(-1) !== '+' && line.value.slice(-1) !== '-')) {
+                line.value += plusMinus;
+            }
+            else {
+                if (plusMinus === '+') {
+                    plusMinus = '-';
+                } else {
+                    plusMinus = '+';
+                }
+                line.value = line.value.slice(0, -1) + plusMinus;
+            }
+        }
+        function calc() {
+            const line = document.getElementById('line').value;
+            const result = eval(line);
+            document.getElementById('line').value = result;
+        }
+    </script>
+</body>
+
+</html>
+
