@@ -1,0 +1,1 @@
+Hello, My name is Alex Lawson. I am an applied math major here at Marist. I enjoy math and the problem solving that surrounds it. I do not consider myself a programmer or software developer, and I do not intend to pursue a career involving such. I also am deeply interested in music and enjoy playing guitar. 

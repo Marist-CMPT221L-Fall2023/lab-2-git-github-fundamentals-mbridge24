@@ -1,0 +1,2 @@
+#What I learned
+For this week, I learned about the basics of markdown, as well as HTML. I've never used either markdown nor HTML, so it will be a matter of getting familiar with the syntax. I have also never used javascript.
