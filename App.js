@@ -1,115 +1,113 @@
 import { useState } from 'react';
+import './App.css';
+import { FaHandRock, FaHandPaper, FaHandScissors } from "react-icons/fa";
 
-function Square({ value, onSquareClick }) {
-  return (
-    <button className="square" onClick={onSquareClick}>
-      {value}
-    </button>
-  );
+const actions = {
+  rock: "scissors",
+  paper: "rock",
+  scissors: "paper",
+};
+
+function randomAction() {
+  const keys = Object.keys(actions);
+  const index = Math.floor(Math.random() * keys.length);
+
+  return keys[index];
+
 }
 
-function Board({ xIsNext, squares, onPlay }) {
-  function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = 'X';
-    } else {
-      nextSquares[i] = 'O';
-    }
-    onPlay(nextSquares);
+function calculateWinner(action1, action2) {
+  if (action1 === action2) {
+    return 0;
+  } else if (actions[action1] === action2) {
+    return -1;
+  } else if (actions[action2] === action1) {
+    return 1;
   }
 
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = 'Winner: ' + winner;
-  } else {
-    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
-  }
-
-  return (
-    <>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
-    </>
-  );
+  return null;
 }
 
-export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+function ActionIcon({ action, ...props }) {
+  const icons = {
+    rock: FaHandRock,
+    paper: FaHandPaper,
+    scissors: FaHandScissors,
+  };
+  const Icon = icons[action]
+  return <Icon {...props} />;
+}
 
-  function handlePlay(nextSquares) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    setHistory(nextHistory);
-    setCurrentMove(nextHistory.length - 1);
-  }
-
-  function jumpTo(nextMove) {
-    setCurrentMove(nextMove);
-  }
-
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = 'Go to move #' + move;
-    } else {
-      description = 'Go to game start';
-    }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
-  });
-
+function Player({ name = "Player", score = 0, action = "rock" }) {
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
-        <ol>{moves}</ol>
+    <div className="player">
+      <div className="score">{`${name}: ${score}`}</div>
+      <div className="action">
+        {action && <ActionIcon action={action} size={50} />}
       </div>
     </div>
   );
 }
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
+function ShowWinner({ winner = 0 }) {
+  const text = {
+    "-1": "You Win!!!",
+    0: "It's a tie :/",
+    1: "You Lose!",
   }
-  return null;
+  return (
+    <h2>{text[winner]}</h2>
+  )
 }
+
+function ActionButton({ action = "rock", onActionSelected }) {
+  return (
+    <button className="round-button" onClick={() => onActionSelected(action)}>
+      <ActionIcon action={action} size={50} />
+    </button>
+  );
+}
+
+function App() {
+  const [playerAction, setPlayerAction] = useState("");
+  const [computerAction, setComputerAction] = useState("");
+
+  const [playerScore, setPlayerScore] = useState(0);
+  const [computerScore, setComputerScore] = useState(0);
+  const [winner, setWinner] = useState(0);
+
+  const onActionSelected = (selectedAction) => {
+    const newComputerAction = randomAction();
+
+    setPlayerAction(selectedAction);
+    setComputerAction(newComputerAction);
+
+
+    const newWinner = calculateWinner(selectedAction, newComputerAction);
+    setWinner(newWinner);
+    if (newWinner === -1) {
+      setPlayerScore(playerScore + 1);
+    } else if (newWinner === 1) {
+      setComputerScore(computerScore + 1);
+    }
+  };
+  return (
+    <div className="center">
+      <h1>Rock Paper Scissors</h1>
+      <div>
+        <div className="container">
+          <Player name="Player" score={playerScore} action={playerAction} />
+          <Player name="Computer" score={computerScore} action={computerAction} />
+        </div>
+        <div>
+          <ActionButton action="rock" onActionSelected={onActionSelected} />
+          <ActionButton action="paper" onActionSelected={onActionSelected} />
+          <ActionButton action="scissors" onActionSelected={onActionSelected} />
+        </div>
+        <ShowWinner winner={winner} />
+      </div>
+    </div>
+  );
+}
+
+export default App;
